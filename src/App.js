@@ -1,25 +1,49 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Todo from './Todo/Todo';
+import TodoAdder from './TodoAdder/TodoAdder';
 
 class App extends Component {
+  state = {
+  todods:[],
+  taskName:""
+  };
+
+  completeTask=(event,index)=>{
+    const todos =[...this.state.todods];
+    todos[index].checked = "checked";
+    this.setState({
+      todods: todos
+    });
+  }
+
+  addTodo = (taskName)=>{
+    const todos = [...this.state.todods];
+    todos.push({task:taskName, checked:""});
+    this.setState({
+      todods: todos
+    });
+  }
+
+  changeTaskName = (event) =>{
+    const task = event.target.value;
+    this.setState({
+      taskName: task
+    });
+  }
+
   render() {
+    let myTodos = this.state.todods.map((t,index)=>{
+        return (<Todo task={t.task} 
+          click={(event)=>{this.completeTask(event,index)}}
+          checked={t.checked} />);
+    });
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <TodoAdder change={(event)=>{this.changeTaskName(event)}} taskName={this.state.taskName} click={(event)=>{this.addTodo(this.state.taskName)}}/>
+        <ul>
+          {myTodos}
+        </ul>
       </div>
     );
   }
