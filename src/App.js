@@ -19,10 +19,15 @@ class App extends Component {
 
   addTodo = (taskName)=>{
     const todos = [...this.state.todods];
-    todos.push({task:taskName, checked:""});
+    if(this.state.taskName){
+      todos.push({task:taskName, checked:""});
+      this.setState({
+        todods: todos
+      });
     this.setState({
-      todods: todos
+      taskName: ""
     });
+    }
   }
 
   changeTaskName = (event) =>{
@@ -30,6 +35,12 @@ class App extends Component {
     this.setState({
       taskName: task
     });
+  }
+
+  keyPressed(event){
+    if(event.key==='Enter'){
+      this.addTodo(this.state.taskName);
+    }
   }
 
   render() {
@@ -40,7 +51,7 @@ class App extends Component {
     });
     return (
       <div className="App">
-        <TodoAdder change={(event)=>{this.changeTaskName(event)}} taskName={this.state.taskName} click={(event)=>{this.addTodo(this.state.taskName)}}/>
+        <TodoAdder change={(event)=>{this.changeTaskName(event)}} taskName={this.state.taskName} click={(event)=>{this.addTodo(this.state.taskName)}} enterPressed={(event)=>this.keyPressed(event)}/>
         <ul>
           {myTodos}
         </ul>
