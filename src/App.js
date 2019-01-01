@@ -37,7 +37,7 @@ class App extends Component {
     const todos = [...this.state.todods];
     if(this.state.taskName){
       console.log(cookies.get('tasks'));
-      todos.push({task:taskName, checked:""});
+      todos.unshift({task:taskName, checked:""});
       const tasksList=JSON.stringify(todos);
         cookies.set('tasks',tasksList);
       //console.log( stringArr);
