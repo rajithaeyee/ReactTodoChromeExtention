@@ -2,25 +2,48 @@ import React, { Component } from 'react';
 import './App.css';
 import Todo from './Todo/Todo';
 import TodoAdder from './TodoAdder/TodoAdder';
+import { instanceOf } from 'prop-types';
+import { withCookies, Cookies } from 'react-cookie';
 
 class App extends Component {
-  state = {
-  todods:[],
-  taskName:""
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
   };
 
+  constructor(props) {
+    super(props);
+    const { cookies } = props;
+    this.state = {
+      todods:cookies.get('tasks')?cookies.get('tasks'):[],
+      taskName:""
+      };
+    // this.state = {
+    //   name: cookies.get('name') || 'Ben'
+    // };
+  }
+  
+
   completeTask=(event,index)=>{
+    const { cookies } = this.props;
     const todos =[...this.state.todods];
     todos[index].checked = "checked";
+    const tasksList=JSON.stringify(todos);
+    cookies.set('tasks',tasksList);
     this.setState({
       todods: todos
     });
   }
 
   addTodo = (taskName)=>{
+    const { cookies } = this.props;
+    
     const todos = [...this.state.todods];
     if(this.state.taskName){
+      console.log(cookies.get('tasks'));
       todos.push({task:taskName, checked:""});
+      const tasksList=JSON.stringify(todos);
+        cookies.set('tasks',tasksList);
+      //console.log( stringArr);
       this.setState({
         todods: todos
       });
@@ -60,4 +83,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withCookies(App);
