@@ -7,3 +7,16 @@
     z-index: 99;
     margin: 5px;
 }
+
+.icon-close:hover{
+   animation: rotation 1s;
+}
+
+@-webkit-keyframes rotation {
+    from {
+            -webkit-transform: rotate(0deg);
+    }
+    to {
+            -webkit-transform: rotate(359deg);
+    }
+}

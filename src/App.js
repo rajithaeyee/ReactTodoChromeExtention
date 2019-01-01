@@ -19,7 +19,6 @@ class App extends Component {
       };
   }
   
-
   completeTask=(event,index)=>{
     const { cookies } = this.props;
     const todos =[...this.state.todods];
